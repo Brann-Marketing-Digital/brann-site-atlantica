@@ -1,0 +1,49 @@
+---
+import { Image } from "astro:assets";
+import { withBase } from "../../config/site";
+import type { Post } from "../../data/posts";
+import PostMeta from "./PostMeta.astro";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const href = withBase(`/post/${post.slug}`);
+---
+
+<article
+  class:list={[
+    "relative border border-card-line bg-surface",
+    post.cover && "md:grid md:grid-cols-[454px_1fr]",
+  ]}
+>
+  {post.cover && (
+    <Image
+      src={post.cover}
+      alt=""
+      widths={[454, 908]}
+      sizes="(min-width: 768px) 454px, 100vw"
+      class="h-[220px] w-full object-cover md:h-[339px]"
+    />
+  )}
+  <div class="flex flex-col px-5 py-[25px] md:px-[38px]">
+    <PostMeta post={post} />
+    <h2
+      class:list={[
+        "font-display font-semibold text-ink",
+        post.cover
+          ? "mt-[18px] text-[28px] leading-[33px]"
+          : "mt-[14px] text-[28px] leading-[33px]",
+      ]}
+    >
+      <a
+        href={href}
+        class="transition-colors duration-[400ms] before:absolute before:inset-0 hover:text-violet focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        {post.title}
+      </a>
+    </h2>
+    {!post.cover && <p class="mt-3 line-clamp-3 text-base leading-6 font-light">{post.excerpt}</p>}
+  </div>
+</article>

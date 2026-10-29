@@ -1,0 +1,42 @@
+---
+import { stats } from "../../data/home";
+---
+
+<section class="bg-linear-to-br from-navy to-navy-soft px-5 pt-16 pb-[21px] text-center text-white lg:pt-[106px] lg:pb-14">
+  <h2
+    data-reveal
+    class="mx-auto max-w-[250px] font-display text-[22px] font-semibold lg:max-w-none lg:text-4xl"
+  >
+    {stats.title}
+  </h2>
+
+  <ul class="mt-[49px] flex flex-col items-center lg:mt-[50px] lg:flex-row lg:justify-center">
+    {stats.items.map((item, index) => (
+      <>
+        {index > 0 && (
+          <li
+            aria-hidden="true"
+            data-reveal
+            class="my-[25px] size-1.5 rounded-full bg-white lg:mx-0 lg:my-0 lg:-ml-[3px] lg:mt-[44px] lg:self-start lg:-mr-[3px]"
+          />
+        )}
+        <li class="lg:w-[250px]">
+          <p
+            data-reveal
+            data-reveal-delay={index * 100}
+            class="font-display text-5xl font-semibold lg:text-[80px] lg:leading-[normal]"
+          >
+            {item.value}
+          </p>
+          <p
+            data-reveal
+            data-reveal-delay={index * 100}
+            class="text-sm font-light lg:mt-[11px] lg:text-lg lg:leading-[normal]"
+          >
+            {item.label}
+          </p>
+        </li>
+      </>
+    ))}
+  </ul>
+</section>

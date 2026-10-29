@@ -1,0 +1,19 @@
+---
+import PostCard from "../components/blog/PostCard.astro";
+import { blog } from "../data/blog";
+import { posts } from "../data/posts";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Blog" description="Posts do blog da Atlântica Proteção Veicular.">
+  <div class="mx-auto max-w-site px-5 pt-[30px] pb-[34px]">
+    <h1 class="text-sm leading-[19.6px] font-light text-violet">{blog.allPosts}</h1>
+    <ul class="mx-auto mt-[51px] flex max-w-[940px] flex-col gap-8">
+      {posts.map((post) => (
+        <li>
+          <PostCard post={post} />
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

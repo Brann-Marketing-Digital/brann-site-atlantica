@@ -1,0 +1,71 @@
+---
+import { Icon } from "astro-icon/components";
+
+// Os destinos são montados no navegador com o endereço real da página.
+const targets = [
+  {
+    id: "facebook",
+    label: "Compartilhar no Facebook",
+    icon: "tabler:brand-facebook",
+    url: "https://www.facebook.com/sharer/sharer.php?u={url}",
+  },
+  {
+    id: "x",
+    label: "Compartilhar no X",
+    icon: "tabler:brand-x",
+    url: "https://twitter.com/intent/tweet?url={url}&text={title}",
+  },
+  {
+    id: "linkedin",
+    label: "Compartilhar no LinkedIn",
+    icon: "tabler:brand-linkedin",
+    url: "https://www.linkedin.com/sharing/share-offsite/?url={url}",
+  },
+] as const;
+---
+
+<div class="flex items-center gap-[22px] border-y border-card-line py-[22px] text-ink" data-share>
+  {targets.map((target) => (
+    <a
+      href="#"
+      data-share-url={target.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded p-0.5 hover:text-brand"
+    >
+      <span class="sr-only">{target.label}</span>
+      <Icon name={target.icon} class="size-[18px]" aria-hidden="true" />
+    </a>
+  ))}
+  <button type="button" class="rounded p-0.5 hover:text-brand" data-share-copy>
+    <span class="sr-only">Copiar link</span>
+    <Icon name="tabler:link" class="size-[18px]" aria-hidden="true" />
+  </button>
+  <span class="text-sm" role="status" aria-live="polite" data-share-status></span>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>("[data-share]");
+
+  if (bar) {
+    const url = encodeURIComponent(location.href);
+    const title = encodeURIComponent(document.title);
+
+    bar.querySelectorAll<HTMLAnchorElement>("[data-share-url]").forEach((link) => {
+      link.href = (link.dataset.shareUrl ?? "").replace("{url}", url).replace("{title}", title);
+    });
+
+    const status = bar.querySelector<HTMLElement>("[data-share-status]");
+    bar.querySelector("[data-share-copy]")?.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(location.href);
+        if (status) status.textContent = "Link copiado!";
+      } catch {
+        if (status) status.textContent = "Não foi possível copiar o link.";
+      }
+      setTimeout(() => {
+        if (status) status.textContent = "";
+      }, 2500);
+    });
+  }
+</script>

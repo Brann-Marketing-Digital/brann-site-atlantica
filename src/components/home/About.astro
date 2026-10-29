@@ -1,0 +1,32 @@
+---
+import aboutImage from "../../assets/home/sobre-motorista.jpg";
+import { about } from "../../data/home";
+import ParallaxImage from "../ParallaxImage.astro";
+---
+
+<section id="sobre" class="lg:mx-auto lg:grid lg:h-[528px] lg:max-w-page lg:grid-cols-2">
+  <div class="px-5 pt-[49px] pb-[18px] lg:pt-[96px] lg:pr-8 lg:pb-0 lg:pl-[clamp(2rem,9.17vw,132px)]">
+    <p
+      data-reveal
+      class="text-sm leading-[17px] font-extrabold tracking-[1.6px] text-navy lg:text-base lg:leading-[19px]"
+    >
+      {about.eyebrow}
+    </p>
+    <h2
+      data-reveal
+      data-reveal-delay="100"
+      class="mt-[19px] font-display text-[22px] leading-[28.6px] font-semibold text-brand lg:mt-[44px] lg:text-4xl lg:leading-[46.8px] lg:tracking-[-0.36px]"
+    >
+      {about.title}
+    </h2>
+    <p
+      data-reveal
+      data-reveal-delay="100"
+      class="mt-[26px] max-w-[274px] font-brand font-normal text-[15px] leading-[25.5px] lg:mt-[17px] lg:max-w-[432px] lg:text-lg lg:leading-[30.6px]"
+    >
+      {about.text}
+    </p>
+  </div>
+
+  <ParallaxImage src={aboutImage} alt="Motorista sorrindo ao volante de um carro" />
+</section>

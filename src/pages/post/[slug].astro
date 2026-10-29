@@ -1,0 +1,66 @@
+---
+import PostBody from "../../components/blog/PostBody.astro";
+import PostMeta from "../../components/blog/PostMeta.astro";
+import ShareBar from "../../components/blog/ShareBar.astro";
+import { withBase } from "../../config/site";
+import { blog } from "../../data/blog";
+import { posts, getRecentPosts, type Post } from "../../data/posts";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export function getStaticPaths() {
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const recent = getRecentPosts(post.slug);
+---
+
+<BaseLayout title={post.title} description={post.excerpt}>
+  <div class="mx-auto max-w-site px-5 pt-[30px] pb-[34px]">
+    <a
+      href={withBase("/blog")}
+      class="text-sm leading-[19.6px] font-light text-ink hover:text-violet"
+    >
+      {blog.allPosts}
+    </a>
+
+    <article class="mx-auto mt-[51px] max-w-[940px] border border-card-line bg-surface px-5 pt-[61px] pb-10 md:px-[100px]">
+      <PostMeta post={post} layout="inline" />
+      <h1 class="mt-[25px] mb-[34px] font-display text-[28px] leading-10 font-bold text-ink md:text-[40px] md:leading-[56px]">
+        {post.title}
+      </h1>
+      <PostBody blocks={post.blocks} />
+      <ShareBar />
+    </article>
+
+    <section aria-labelledby="recent-title" class="mx-auto mt-[29px] max-w-[940px]">
+      <div class="flex items-baseline justify-between">
+        <h2 id="recent-title" class="text-lg leading-[27px] font-light">
+          {blog.recentTitle}
+        </h2>
+        <a href={withBase("/blog")} class="text-sm leading-[21px] font-light hover:text-violet">
+          {blog.recentAll}
+        </a>
+      </div>
+      <ul class="mt-[17px] grid gap-8 md:grid-cols-3">
+        {recent.map((item) => (
+          <li class="relative border border-card-line bg-surface px-[25px] py-6">
+            <h3 class="line-clamp-2 font-display text-lg leading-[21px] font-bold">
+              <a
+                href={withBase(`/post/${item.slug}`)}
+                class="transition-colors duration-[400ms] before:absolute before:inset-0 hover:text-violet focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+              >
+                {item.title}
+              </a>
+            </h3>
+            <p class="mt-4 line-clamp-4 text-base leading-6 font-light">{item.excerpt}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</BaseLayout>

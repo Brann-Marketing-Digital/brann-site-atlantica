@@ -1,0 +1,24 @@
+---
+import Container from "./Container.astro";
+
+interface Props {
+  id?: string;
+  tone?: "default" | "lilac" | "brand" | "navy";
+  class?: string;
+}
+
+const { id, tone = "default", class: className } = Astro.props;
+
+const tones = {
+  default: "bg-surface text-ink",
+  lilac: "bg-lilac text-ink",
+  brand: "bg-brand text-brand-foreground",
+  navy: "bg-navy text-brand-foreground",
+} as const;
+---
+
+<section id={id} class:list={["py-16 lg:py-24", tones[tone], className]}>
+  <Container>
+    <slot />
+  </Container>
+</section>

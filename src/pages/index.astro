@@ -1,0 +1,21 @@
+---
+import About from "../components/home/About.astro";
+import Benefits from "../components/home/Benefits.astro";
+import Contact from "../components/home/Contact.astro";
+import Hero from "../components/home/Hero.astro";
+import Intro from "../components/home/Intro.astro";
+import Stats from "../components/home/Stats.astro";
+import { site } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title={site.name} description={site.description}>
+  <Fragment slot="start">
+    <Intro />
+  </Fragment>
+  <Hero />
+  <Benefits />
+  <Stats />
+  <About />
+  <Contact />
+</BaseLayout>

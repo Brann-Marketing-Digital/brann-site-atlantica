@@ -1,0 +1,93 @@
+---
+import { getImage } from "astro:assets";
+import posterHorizontalImage from "../../assets/home/abertura-poster-horizontal.jpg";
+import posterVerticalImage from "../../assets/home/abertura-poster-vertical.jpg";
+import { withBase } from "../../config/site";
+
+// Primeiro quadro de cada versão: aparece na hora, antes de o vídeo carregar.
+const posterVertical = await getImage({ src: posterVerticalImage, format: "webp" });
+const posterHorizontal = await getImage({ src: posterHorizontalImage, format: "webp" });
+---
+
+<!--
+  Vídeo de abertura da home (3 s, sem som). Toca na primeira vez que a home abre na
+  sessão e sempre que a página é recarregada; voltar para a home navegando pelo site
+  não repete. Clicar (ou Esc) pula. Com "reduzir movimento" ou sem JavaScript, não aparece.
+  Duas versões em MP4 (H.264, decodificado pelo hardware em qualquer aparelho), ambas
+  cobrindo a tela inteira:
+  - vertical (720×1280): telas em pé, como celulares;
+  - horizontal (2276×1280): o vertical com as bordas esticadas para os lados, para telas deitadas.
+  O fundo só aparece enquanto a imagem inicial carrega.
+-->
+<div
+  id="intro"
+  hidden
+  aria-hidden="true"
+  class="fixed inset-0 z-50 cursor-pointer bg-[#152f64] transition-opacity duration-500"
+>
+  <video
+    muted
+    playsinline
+    preload="none"
+    data-vertical={withBase("/videos/abertura-vertical.mp4")}
+    data-vertical-poster={posterVertical.src}
+    data-horizontal={withBase("/videos/abertura-horizontal.mp4")}
+    data-horizontal-poster={posterHorizontal.src}
+    class="size-full object-cover"
+  ></video>
+</div>
+
+<!-- Inline e logo após o elemento: decide antes da primeira pintura, sem piscar o site. -->
+<script is:inline>
+  (() => {
+    const intro = document.getElementById("intro");
+    const video = intro.querySelector("video");
+    const root = document.documentElement;
+
+    const reload = performance.getEntriesByType("navigation")[0]?.type === "reload";
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem("intro-seen") === "1";
+      sessionStorage.setItem("intro-seen", "1");
+    } catch {
+      // Sem sessionStorage (modo privado restrito): trata como primeira visita.
+    }
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || (seen && !reload)) {
+      intro.remove();
+      return;
+    }
+
+    const version = matchMedia("(orientation: portrait)").matches ? "vertical" : "horizontal";
+    video.poster = video.dataset[`${version}Poster`];
+    video.src = video.dataset[version];
+
+    intro.hidden = false;
+    root.classList.add("intro-playing");
+    root.style.overflow = "hidden";
+
+    let done = false;
+    let stall = 0;
+
+    function close() {
+      if (done) return;
+      done = true;
+      clearTimeout(stall);
+      root.classList.remove("intro-playing");
+      root.style.overflow = "";
+      dispatchEvent(new Event("intro:end"));
+      intro.classList.add("opacity-0");
+      setTimeout(() => intro.remove(), 500);
+    }
+
+    // Se o vídeo não começar logo (rede lenta, autoplay bloqueado), o site não fica esperando.
+    stall = setTimeout(close, 2500);
+    video.addEventListener("playing", () => clearTimeout(stall), { once: true });
+    video.addEventListener("ended", close);
+    intro.addEventListener("click", close);
+    addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+    video.play().catch(close);
+  })();
+</script>

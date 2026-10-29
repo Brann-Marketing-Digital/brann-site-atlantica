@@ -1,0 +1,46 @@
+---
+interface Props {
+  /** Com `href` renderiza um link; sem ele, um botão. */
+  href?: string;
+  variant?: "brand" | "navy";
+  /** Abre em nova aba (links externos). */
+  external?: boolean;
+  type?: "button" | "submit" | "reset";
+  class?: string;
+}
+
+const {
+  href,
+  variant = "brand",
+  external = false,
+  type = "button",
+  class: className,
+  ...attrs
+} = Astro.props;
+
+const base =
+  "inline-flex items-center justify-center rounded-full font-sans font-light text-brand-foreground transition-colors duration-[400ms] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand";
+
+const variants = {
+  brand: "bg-brand hover:bg-ink",
+  navy: "bg-navy hover:bg-ink",
+} as const;
+
+const classes = [base, variants[variant], className];
+---
+
+{href ? (
+  <a
+    {...attrs}
+    href={href}
+    class:list={classes}
+    target={external ? "_blank" : undefined}
+    rel={external ? "noopener noreferrer" : undefined}
+  >
+    <slot />
+  </a>
+) : (
+  <button {...attrs} type={type} class:list={classes}>
+    <slot />
+  </button>
+)}

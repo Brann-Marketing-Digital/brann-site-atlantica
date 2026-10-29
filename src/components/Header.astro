@@ -1,0 +1,111 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import logo from "../assets/logo-atlantica.png";
+import { site, whatsappUrl, withBase, withoutBase } from "../config/site";
+import Button from "./Button.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+// Início só fica ativo na home; posts pertencem à seção Blog.
+const path = withoutBase(Astro.url.pathname).replace(/\/$/, "") || "/";
+const section = path.startsWith("/post/") ? "/blog" : path;
+const instagram = site.social.find((item) => item.label === "Instagram");
+---
+
+<header class:list={["relative z-30 bg-surface", className]}>
+  <div class="absolute top-[30px] right-[68px] flex flex-col items-center xl:top-4 xl:right-6">
+    {instagram && (
+      <a
+        href={instagram.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-md p-1 text-navy transition-colors duration-[400ms] hover:text-violet"
+      >
+        <span class="sr-only">{instagram.label}</span>
+        <Icon name="tabler:brand-instagram" class="size-8 xl:size-7" aria-hidden="true" />
+      </a>
+    )}
+    <a
+      href={whatsappUrl()}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="rounded-md p-1 text-navy transition-colors duration-[400ms] hover:text-violet"
+    >
+      <span class="sr-only">WhatsApp</span>
+      <Icon name="tabler:brand-whatsapp" class="size-8 xl:size-7" aria-hidden="true" />
+    </a>
+  </div>
+  <div class="mx-auto flex max-w-page flex-col items-center px-5 pt-[30px] pb-6 xl:h-[121px] xl:flex-row xl:items-start xl:justify-start xl:p-0 xl:pr-[10%] xl:pl-[16.8%]">
+    <a href={withBase("/")} class="shrink-0" aria-label={site.name}>
+      <Image
+        src={logo}
+        alt={site.name}
+        widths={[158, 236, 472]}
+        sizes="(min-width: 1280px) 236px, 158px"
+        loading="eager"
+        class="h-auto w-[158px] xl:w-[236px]"
+      />
+    </a>
+
+    <button
+      type="button"
+      class="absolute top-[30px] right-5 rounded-md p-1 text-navy xl:hidden"
+      aria-expanded="false"
+      aria-controls="site-nav"
+      data-nav-toggle
+    >
+      <span class="sr-only">Abrir menu</span>
+      <Icon name="tabler:equal" class="size-8" aria-hidden="true" />
+    </button>
+
+    <nav
+      id="site-nav"
+      aria-label="Principal"
+      class="absolute inset-x-0 top-full hidden flex-col border-b border-card-line bg-surface px-5 py-3 shadow-md data-[open]:flex xl:static xl:mt-[43px] xl:ml-[12px] xl:flex xl:flex-row xl:gap-2.5 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none"
+      data-nav
+    >
+      {site.nav.map((item) => (
+        <a
+          href={withBase(item.href)}
+          aria-current={item.href === section ? "page" : undefined}
+          class="px-2.5 py-1.5 transition-colors duration-[400ms] text-lg xl:py-0 leading-[30px] font-light text-ink hover:text-violet aria-[current=page]:text-violet"
+        >
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <Button
+      href={site.memberArea.href}
+      variant="navy"
+      external
+      class="animate-rubber mt-[22px] h-[34px] w-[178px] text-[16.8px] xl:mt-[34px] xl:ml-[23px] xl:h-[49px] xl:w-[199px] xl:text-lg"
+    >
+      {site.memberArea.label}
+    </Button>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const nav = document.querySelector<HTMLElement>("[data-nav]");
+
+  toggle?.addEventListener("click", () => {
+    const open = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!open));
+    nav?.toggleAttribute("data-open", !open);
+  });
+
+  // Fecha o menu ao escolher um destino (âncoras na mesma página não recarregam).
+  nav?.addEventListener("click", (event) => {
+    if ((event.target as HTMLElement).closest("a")) {
+      toggle?.setAttribute("aria-expanded", "false");
+      nav.removeAttribute("data-open");
+    }
+  });
+</script>

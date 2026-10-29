@@ -1,0 +1,68 @@
+---
+import { Image } from "astro:assets";
+import heroImage from "../../assets/home/hero-motorista.jpg";
+import { whatsappUrl } from "../../config/site";
+import { hero } from "../../data/home";
+import Button from "../Button.astro";
+---
+
+<section class="relative h-[384px] overflow-hidden bg-lilac lg:h-[815px]">
+  <div
+    class="absolute inset-0 lg:inset-x-0 lg:-top-[148px] lg:bottom-auto lg:h-[963px] lg:will-change-transform"
+    data-parallax="scroll"
+  >
+    <Image
+      src={heroImage}
+      alt=""
+      widths={[640, 1440, 2880]}
+      sizes="100vw"
+      loading="eager"
+      class="size-full object-cover object-[72%_center] lg:object-center"
+    />
+  </div>
+
+  <div class="relative mx-auto flex h-full max-w-page flex-col items-center px-5 pt-[18px] lg:items-start lg:pt-[30px] lg:pl-[clamp(2rem,9.17vw,132px)]">
+    <h1
+      data-reveal
+      class="mr-auto max-w-[160px] font-display text-[32px] leading-[35.2px] font-bold text-white lg:max-w-[665px] lg:text-[75px] lg:leading-[82.5px] lg:tracking-[-1.5px]"
+    >
+      {hero.title}
+    </h1>
+
+    <p
+      data-reveal
+      data-reveal-delay="100"
+      class="mt-[23px] text-base leading-[25.6px] font-light text-brand lg:mt-[25px] lg:text-2xl lg:leading-[38.4px]"
+    >
+      {hero.subtitle}
+    </p>
+
+    <Button
+      href={whatsappUrl()}
+      external
+      data-reveal
+      data-reveal-delay="100"
+      class="mt-[8px] h-[38px] w-[156px] text-[14.8px] lg:mt-[30px] lg:h-[50px] lg:w-[180px] lg:text-lg"
+    >
+      {hero.cta}
+    </Button>
+
+    <div data-reveal class="mt-2 font-brand font-normal text-white lg:mt-[49px]">
+      <p class="text-center text-lg leading-[19.8px] lg:text-left lg:text-[23px] lg:leading-[25.3px] lg:tracking-[-0.46px]">
+        {hero.priceLabel}
+      </p>
+      <p class="mt-[9px] flex items-baseline justify-center leading-none font-bold lg:-mt-2 lg:justify-start lg:tracking-[-0.46px]">
+        <span class="text-[21px] lg:text-[31px]">{hero.price.currency}</span>
+        <span class="text-[37px] lg:text-[93px]">{hero.price.units}</span>
+        <span class="text-[23px] lg:text-4xl">{hero.price.cents}</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="absolute top-[317px] left-0 flex h-[33px] w-full items-center justify-center bg-linear-to-r from-navy to-navy-soft font-brand font-normal text-[15px] text-white lg:top-[528px] lg:h-7 lg:w-[430px] lg:justify-start lg:pl-[105px] lg:text-lg">
+    <p data-reveal class="lg:w-[325px] lg:text-center">
+      <strong class="font-bold">{hero.note.strong}</strong>
+      {hero.note.rest}
+    </p>
+  </div>
+</section>

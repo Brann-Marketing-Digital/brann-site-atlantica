@@ -1,0 +1,28 @@
+---
+import { Icon } from "astro-icon/components";
+import { site, withBase } from "../config/site";
+import Button from "./Button.astro";
+---
+
+<section aria-labelledby="manual-title" class="px-5 py-10 text-center lg:py-16">
+  <h2
+    id="manual-title"
+    class="mx-auto max-w-[280px] font-brand text-2xl leading-[26.4px] font-bold tracking-[-0.02em] text-ink lg:max-w-[590px] lg:text-[43px] lg:leading-[47.3px]"
+  >
+    Baixe o manual do associado Atlântica
+  </h2>
+
+  <span class="mx-auto mt-8 flex size-20 items-center justify-center rounded-2xl bg-brand/10 text-brand lg:mt-10">
+    <Icon name="tabler:book-2" class="size-10" aria-hidden="true" />
+  </span>
+
+  <Button
+    href={withBase(site.manual.file)}
+    external
+    class="mt-6 gap-2 px-8 py-3 text-base font-normal"
+    aria-label={`Baixar ${site.manual.label}`}
+  >
+    <Icon name="tabler:download" class="size-5" aria-hidden="true" />
+    Baixar manual
+  </Button>
+</section>
