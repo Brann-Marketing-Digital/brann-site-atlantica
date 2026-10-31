@@ -1,0 +1,96 @@
+---
+import { site, whatsappUrl } from "../config/site";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const { whatsapp, phone } = site.contact;
+---
+
+<BaseLayout
+  title="Política de Privacidade"
+  description={`Como a ${site.name} trata os dados pessoais de quem visita este site, conforme a LGPD.`}
+>
+  <article class="mx-auto max-w-[940px] px-5 pt-[51px] pb-10 md:px-[100px]">
+    <h1 class="font-display text-[28px] leading-10 font-bold text-ink md:text-[40px] md:leading-[56px]">
+      Política de Privacidade
+    </h1>
+    <p class="mt-2 text-sm font-light text-ink">Última atualização: 31 de outubro de 2026</p>
+
+    <div class="mt-8 text-lg leading-[27px] font-light text-ink [&_a]:underline [&_h2]:mt-10 [&_h2]:mb-4 [&_h2]:font-display [&_h2]:text-[24px] [&_h2]:leading-[33px] [&_h2]:font-semibold [&_p]:mb-6 [&_ul]:mb-6 [&_ul]:list-disc [&_ul]:pl-9">
+      <p>
+        Esta política explica como a Atlântica Associação de Mútuo Benefícios e Proteção Veicular
+        (CNPJ 32.284.494/0001-70) trata os dados pessoais de quem visita este site, de acordo com a
+        Lei Geral de Proteção de Dados (Lei nº 13.709/2018, a LGPD). A Atlântica é a controladora
+        desses dados.
+      </p>
+
+      <h2>Quais dados coletamos</h2>
+      <p>Este site não tem formulários. Tratamos apenas:</p>
+      <ul>
+        <li>os dados que você nos passar por WhatsApp ou telefone;</li>
+        <li>
+          dados técnicos registrados pelo provedor que hospeda o site, como endereço IP, data e hora
+          e navegador, para funcionamento e segurança.
+        </li>
+      </ul>
+      <p>
+        A Área do Associado e os aplicativos da Atlântica são sistemas à parte, com regras próprias
+        para os dados de cadastro dos associados.
+      </p>
+
+      <h2>Para que usamos</h2>
+      <p>
+        Usamos seus dados só para responder ao seu contato, fazer cotações e prestar o atendimento
+        que você pediu, e para manter o site funcionando com segurança. As bases legais são a
+        execução de procedimentos preliminares a um contrato, a seu pedido, e o nosso legítimo
+        interesse em manter o site seguro (art. 7º, V e IX, da LGPD).
+      </p>
+
+      <h2>Com quem compartilhamos</h2>
+      <p>Não vendemos nem alugamos seus dados. Eles passam apenas por:</p>
+      <ul>
+        <li>WhatsApp (Meta), quando você nos envia uma mensagem;</li>
+        <li>Google, que exibe o mapa com o nosso endereço;</li>
+        <li>o provedor de hospedagem do site;</li>
+        <li>autoridades públicas, quando a lei exigir.</li>
+      </ul>
+      <p>
+        Alguns desses serviços podem armazenar dados em servidores fora do Brasil, sempre com as
+        garantias previstas no art. 33 da LGPD.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        Este site não usa cookies de análise, rastreamento ou publicidade. Ele guarda no seu
+        navegador apenas se a animação de abertura já foi exibida, para não repeti-la durante a
+        visita. O mapa do Google pode definir cookies próprios, regidos pela política de privacidade
+        do Google.
+      </p>
+
+      <h2>Por quanto tempo guardamos</h2>
+      <p>
+        Guardamos seus dados pelo tempo necessário para atender ao seu pedido e cumprir obrigações
+        legais. Depois disso, eles são apagados.
+      </p>
+
+      <h2>Seus direitos</h2>
+      <p>
+        Você pode pedir, a qualquer momento: confirmação de que tratamos seus dados, acesso a eles,
+        correção, anonimização, bloqueio ou eliminação, portabilidade, informação sobre com quem
+        compartilhamos e revogação do consentimento, quando for o caso (art. 18 da LGPD). Também
+        pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD).
+      </p>
+
+      <h2>Contato</h2>
+      <p>
+        Para exercer seus direitos ou tirar dúvidas sobre esta política, fale conosco pelo WhatsApp{" "}
+        <a href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
+          {whatsapp.display}
+        </a>{" "}
+        ou pelo telefone {phone}.
+      </p>
+
+      <h2>Alterações</h2>
+      <p>Esta política pode ser atualizada. A data no topo da página indica a versão em vigor.</p>
+    </div>
+  </article>
+</BaseLayout>

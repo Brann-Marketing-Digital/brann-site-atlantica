@@ -1,5 +1,5 @@
 ---
-import { site } from "../config/site";
+import { site, withBase } from "../config/site";
 import ManualDownload from "./ManualDownload.astro";
 
 interface Props {
@@ -13,5 +13,9 @@ const { class: className } = Astro.props;
   <ManualDownload />
   <p class="px-5 pt-[100px] pb-5 text-center text-[15px] leading-[18px] font-light text-ink lg:pt-[129px]">
     © 2026 - {site.name}.
+    <br />
+    <a href={withBase("/politica-de-privacidade")} class="underline hover:text-brand">
+      Política de Privacidade
+    </a>
   </p>
 </footer>
